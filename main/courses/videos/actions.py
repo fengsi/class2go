@@ -2,7 +2,6 @@ from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.template import Context, loader
 from c2g.models import Course, Video
-from django.template import RequestContext
 from django.core.urlresolvers import reverse
 
 import subprocess

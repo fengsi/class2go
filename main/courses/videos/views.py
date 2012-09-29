@@ -13,8 +13,6 @@ from courses.forms import *
 import gdata.youtube
 import gdata.youtube.service
 from django.db.models import Q
-
-from django.template import RequestContext
 from courses.actions import auth_view_wrapper, auth_is_course_admin_view_wrapper
 
 @auth_view_wrapper

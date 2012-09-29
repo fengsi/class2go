@@ -2,7 +2,6 @@ from courses.reports.data_aggregation import *
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import Context, loader
-from django.template import RequestContext
 from courses.actions import auth_is_course_admin_view_wrapper
 from storages.backends.s3boto import S3BotoStorage
 from database import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SECURE_STORAGE_BUCKET_NAME

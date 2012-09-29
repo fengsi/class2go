@@ -1,7 +1,6 @@
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect
 from django.template import Context, loader
-from django.template import RequestContext
 from c2g.models import *
 from courses.course_materials import get_course_materials
 from courses.common_page_data import get_common_page_data

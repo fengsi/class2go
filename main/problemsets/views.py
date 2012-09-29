@@ -2,7 +2,6 @@ from django.core.urlresolvers import reverse
 from c2g.models import Course, ProblemActivity, ProblemSet, ContentSection, Exercise, ProblemSetToExercise, VideoToExercise, PageVisitLog
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, HttpResponseRedirect
-from django.template import RequestContext
 from courses.common_page_data import get_common_page_data
 from courses.course_materials import get_course_materials
 from django.views.decorators.csrf import csrf_exempt

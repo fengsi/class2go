@@ -2,7 +2,6 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, redirect
 from django.template import Context, loader
-from django.template import RequestContext
 from django.contrib.auth.models import User,Group
 from courses.course_materials import get_course_materials
 from courses.common_page_data import get_common_page_data

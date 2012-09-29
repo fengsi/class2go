@@ -1,7 +1,6 @@
 from django.http import HttpResponse, Http404
 from django.shortcuts import render
 from django.template import Context, loader
-from django.template import RequestContext
 from datetime import datetime
 from models import Course
 from courses.actions import is_member_of_course

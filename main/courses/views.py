@@ -2,7 +2,6 @@ from django.http import HttpResponse, Http404
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, redirect
 from django.template import Context, loader
-from django.template import RequestContext
 from django.contrib import messages
 from c2g.models import *
 from courses.course_materials import get_course_materials

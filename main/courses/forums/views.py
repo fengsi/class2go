@@ -1,7 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import Context, loader
-from django.template import RequestContext
 from courses.actions import auth_view_wrapper
 from courses.forums.forms import PiazzaAuthForm
 from c2g.models import PageVisitLog

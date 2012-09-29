@@ -1,6 +1,5 @@
 # Create your views here.
 from courses.email_members.forms import EmailForm
-from django.template import RequestContext
 from django.shortcuts import render, redirect
 from courses.actions import auth_is_course_admin_view_wrapper
 from django.views.decorators.debug import sensitive_post_parameters
