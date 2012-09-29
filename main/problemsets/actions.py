@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render, redirect
 from django.template import Context, loader
 from django.template import RequestContext
 from django.contrib.auth.models import User,Group

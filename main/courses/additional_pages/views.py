@@ -1,5 +1,5 @@
 from django.http import HttpResponse, Http404
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render, redirect
 from django.template import Context, loader
 from django.template import RequestContext
 from c2g.models import *
@@ -18,7 +18,10 @@ def manage_nav_menu(request, course_prefix, course_suffix):
     if not common_page_data['is_course_admin']:
         return redirect('courses.views.main', course_prefix, course_suffix)
     
-    return render_to_response('additional_pages/manage_nav_menu.html', {'common_page_data':common_page_data, 'mode':'nav_menu'}, context_instance=RequestContext(request))
+    return render(request, 'additional_pages/manage_nav_menu.html', {
+        'common_page_data': common_page_data,
+        'mode': 'nav_menu'
+    })
 
 @auth_is_course_admin_view_wrapper
 def add_section_page(request, course_prefix, course_suffix):
@@ -31,7 +34,11 @@ def add_section_page(request, course_prefix, course_suffix):
         return redirect('courses.views.main', course_prefix, course_suffix)
     
     sections = ContentSection.objects.getByCourse(course=common_page_data['course'])
-    return render_to_response('additional_pages/add_section_page.html', {'common_page_data':common_page_data, 'mode':'section', 'sections':sections}, context_instance=RequestContext(request))
+    return render(request, 'additional_pages/add_section_page.html', {
+        'common_page_data': common_page_data,
+        'mode': 'section',
+        'sections': sections
+    })
 
 @auth_view_wrapper
 def main(request, course_prefix, course_suffix, slug):
@@ -55,4 +62,7 @@ def main(request, course_prefix, course_suffix, slug):
     else:
         template = 'additional_pages/view.html'
         
-    return render_to_response(template,{'common_page_data': common_page_data, 'page':page},context_instance=RequestContext(request))
+    return render(request, template, {
+        'common_page_data': common_page_data,
+        'page':page
+    })

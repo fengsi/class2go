@@ -1,5 +1,5 @@
 from django.http import HttpResponse, Http404
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render
 from courses.common_page_data import get_common_page_data
 
 from courses.files.forms import *
@@ -14,7 +14,7 @@ def upload(request, course_prefix, course_suffix):
 
     form = FileUploadForm(course=common_page_data['course'])
 
-    return render(request, 'files/upload.html',
-            {'common_page_data': common_page_data,
-             'form': form,
-             })
+    return render(request, 'files/upload.html', {
+        'common_page_data': common_page_data,
+        'form': form
+    })

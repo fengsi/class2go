@@ -44,7 +44,7 @@ def profile(request):
     allow_password_change = True
     if (not request.user.is_authenticated()) or (request.user.get_profile().institutions.filter(title='Stanford').exists()):
         allow_password_change = False
-    return render('accounts/profile.html', {
+    return render(request, 'accounts/profile.html', {
         'courses': courses,
         'show_pwd_change': allow_password_change
     })
@@ -53,7 +53,7 @@ def profile(request):
 def edit(request):
     uform = EditUserForm(instance=request.user)
     pform = EditProfileForm(instance=request.user.get_profile())
-    return render('accounts/edit.html', {
+    return render(request, 'accounts/edit.html', {
         'uform': uform,
         'pform': pform
     })
@@ -68,7 +68,7 @@ def save_edits(request):
         pform.save()
         return HttpResponseRedirect(reverse('accounts.views.profile'))
 
-    return render('accounts/edit.html', {
+    return render(request, 'accounts/edit.html', {
         'uform': uform,
         'pform': pform
     })

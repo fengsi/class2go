@@ -1,5 +1,5 @@
 from django.http import HttpResponse, Http404
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render, redirect
 from django.template import Context, loader
 from django.template import RequestContext
 from c2g.models import *

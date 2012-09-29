@@ -1,5 +1,5 @@
 from django.http import HttpResponse, Http404
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render, redirect
 from django.template import Context, loader
 from django.template import RequestContext
 from c2g.models import *
@@ -18,7 +18,10 @@ def reorder(request, course_prefix, course_suffix):
         
     sections = ContentSection.objects.getByCourse(course=common_page_data['course'])
     
-    return render_to_response('content_sections/draft/reorder.html', {'common_page_data': common_page_data, 'sections':sections}, context_instance=RequestContext(request))
+    return render(request, 'content_sections/draft/reorder.html', {
+        'common_page_data': common_page_data,
+        'sections': sections
+    })
 
 @auth_is_course_admin_view_wrapper
 def rename(request, course_prefix, course_suffix, section_id):
@@ -31,4 +34,7 @@ def rename(request, course_prefix, course_suffix, section_id):
         return redirect('courses.views.main',  course_prefix, course_suffix)
         
     section = ContentSection.objects.get(id=section_id)
-    return render_to_response('content_sections/draft/rename.html', {'common_page_data': common_page_data, 'section':section}, context_instance=RequestContext(request))
+    return render(request, 'content_sections/draft/rename.html', {
+        'common_page_data': common_page_data,
+        'section': section
+    })

@@ -3,9 +3,7 @@
 from django.http import HttpResponse, Http404
 from registration.forms import RegistrationFormUniqueEmail
 from registration.backends import get_backend
-from django.shortcuts import redirect
-from django.shortcuts import render_to_response
-from django.template import RequestContext
+from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from registration.backends import get_backend
 from courses.common_page_data import get_common_page_data
@@ -45,17 +43,16 @@ def preview(request, course_prefix, course_suffix):
    
     form = form_class(initial={'course_prefix':course_prefix,'course_suffix':course_suffix})
     login_form = AuthenticationForm(request)
-    context = RequestContext(request)
     template_name='previews/default.html'
     class_template='previews/'+request.common_page_data['course'].handle+'.html'
     if os.path.isfile(settings.TEMPLATE_DIRS+'/'+class_template):
         template_name=class_template
-    return render_to_response(template_name,
-                              {'form': form,
-                               'login_form': login_form,
-                              'common_page_data': request.common_page_data,
-                              'display_login': request.GET.__contains__('login')},
-                              context_instance=context)
+    return render(request, template_name, {
+        'form': form,
+        'login_form': login_form,
+        'common_page_data': request.common_page_data,
+        'display_login': request.GET.__contains__('login')
+    })
 
 @sensitive_post_parameters()
 @never_cache
@@ -76,13 +73,12 @@ def preview_login(request, course_prefix, course_suffix):
         return redirect(reverse(redirect_to, args=[course_prefix, course_suffix]))
     else:
         form = form_class(initial={'course_prefix':course_prefix,'course_suffix':course_suffix})
-        context = RequestContext(request)                
-        return render_to_response('previews/'+request.common_page_data['course'].handle+'.html',
-                          {'form': form,
-                          'login_form': login_form,
-                          'common_page_data': request.common_page_data,
-                          'display_login': True},
-                          context_instance=context)
+        return render(request, 'previews/'+request.common_page_data['course'].handle+'.html', {
+            'form': form,
+            'login_form': login_form,
+            'common_page_data': request.common_page_data,
+            'display_login': True
+        })
 
 @sensitive_post_parameters()
 @require_POST
@@ -105,10 +101,9 @@ def preview_reg(request, course_prefix, course_suffix):
         return redirect(reverse(redirect_to, args=[course_prefix, course_suffix]))
     else:
         login_form = AuthenticationForm(data=request.POST)
-        context = RequestContext(request)                
-        return render_to_response('previews/'+request.common_page_data['course'].handle+'.html',
-                                      {'form': form,
-                                      'login_form': login_form,
-                                      'common_page_data': request.common_page_data,
-                                      'display_login': False},
-                                      context_instance=context)
+        return render(request, 'previews/'+request.common_page_data['course'].handle+'.html', {
+            'form': form,
+            'login_form': login_form,
+            'common_page_data': request.common_page_data,
+            'display_login': False
+        })

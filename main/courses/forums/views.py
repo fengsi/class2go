@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import Context, loader
 from django.template import RequestContext
 from courses.actions import auth_view_wrapper
@@ -77,10 +77,9 @@ def view(request, course_prefix, course_suffix):
     # Set common_page_data['can_switch_mode'] to false to hide mode switcher on this page.
     request.common_page_data['can_switch_mode'] = False
     
-    return render_to_response('forums/piazza.html', {
-            'common_page_data': request.common_page_data,
-            'show_confirmation': show_confirmation,
-            'form': form,
-            'piazza_target_url': PIAZZA_ENDPOINT,
-        }, context_instance=RequestContext(request))
-
+    return render(request, 'forums/piazza.html', {
+        'common_page_data': request.common_page_data,
+        'show_confirmation': show_confirmation,
+        'form': form,
+        'piazza_target_url': PIAZZA_ENDPOINT
+    })

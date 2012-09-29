@@ -1,7 +1,7 @@
 # Create your views here.
 from courses.email_members.forms import EmailForm
 from django.template import RequestContext
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render, redirect
 from courses.actions import auth_is_course_admin_view_wrapper
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.decorators.csrf import csrf_protect
@@ -26,10 +26,9 @@ def optout(request,code):
         addr.optout=True
         addr.save()
         email_list.append(addr.addr)
-    return render_to_response('email/optout.html',
-                          {'email_list': email_list,},
-                          context_instance=RequestContext(request))
-
+    return render(request, 'email/optout.html', {
+        'email_list': email_list
+    })
 
     
 @sensitive_post_parameters()
@@ -76,15 +75,14 @@ def email_members(request, course_prefix, course_suffix):
             
         else:
             error_msg = "Please fix the errors below:"
-    
-    context = RequestContext(request)
-    return render_to_response('email/email.html',
-                              {'form': form,
-                              'error_msg': error_msg,
-                              'success_msg': success_msg,
-                              'course': request.common_page_data['course'],
-                              'common_page_data': request.common_page_data},
-                              context_instance=context)
+
+    return render(request, 'email/email.html', {
+        'form': form,
+        'error_msg': error_msg,
+        'success_msg': success_msg,
+        'course': request.common_page_data['course'],
+        'common_page_data': request.common_page_data
+    })
 
 @sensitive_post_parameters()
 @csrf_protect
@@ -126,13 +124,11 @@ def email_members_old(request, course_prefix, course_suffix):
         
         else:
             error_msg = "Please fix the errors below:"
-    
-    context = RequestContext(request)
-    return render_to_response('email/email.html',
-                              {'form': form,
-                              'error_msg': error_msg,
-                              'success_msg': success_msg,
-                              'course': request.common_page_data['course'],
-                              'common_page_data': request.common_page_data},
-                              context_instance=context)
 
+    return render(request, 'email/email.html', {
+        'form': form,
+        'error_msg': error_msg,
+        'success_msg': success_msg,
+        'course': request.common_page_data['course'],
+        'common_page_data': request.common_page_data
+    })

@@ -1,7 +1,7 @@
 from django.core.urlresolvers import reverse
 from c2g.models import Course, ProblemActivity, ProblemSet, ContentSection, Exercise, ProblemSetToExercise, VideoToExercise, PageVisitLog
 from django.http import HttpResponse, Http404
-from django.shortcuts import render_to_response, HttpResponseRedirect, render
+from django.shortcuts import render, HttpResponseRedirect
 from django.template import RequestContext
 from courses.common_page_data import get_common_page_data
 from courses.course_materials import get_course_materials
@@ -33,7 +33,12 @@ def list(request, course_prefix, course_suffix):
     if request.common_page_data['course_mode'] == "draft":
         form = LiveDateForm()
 
-    return render_to_response('problemsets/'+common_page_data['course_mode']+'/list.html', {'common_page_data': common_page_data, 'section_structures':section_structures, 'context':'problemset_list', 'form': form}, context_instance=RequestContext(request))
+    return render(request, 'problemsets/'+common_page_data['course_mode']+'/list.html', {
+        'common_page_data': common_page_data,
+        'section_structures': section_structures,
+        'context': 'problemset_list',
+        'form': form
+    })
 
 @auth_view_wrapper
 def show(request, course_prefix, course_suffix, pset_slug):
@@ -65,16 +70,15 @@ def show(request, course_prefix, course_suffix, pset_slug):
         attempts = problem_activities.filter(problemset_to_exercise__exercise__fileName=psetToEx.exercise.fileName).order_by('-complete', '-attempt_number')  
         if len(attempts) > 0:
             activity_list.append(attempts[0])
-    return render_to_response('problemsets/problemset.html',
-                              {'common_page_data':common_page_data,
-                               'pset': ps,
-                               'pset_url':ps.path,
-                               'pset_type':ps.assessment_type,
-                               'pset_penalty':ps.resubmission_penalty,
-                               'pset_attempts_allowed':ps.submissions_permitted,
-                               'activity_list': activity_list,
-                              },
-                              context_instance=RequestContext(request))
+    return render(request, 'problemsets/problemset.html', {
+        'common_page_data': common_page_data,
+        'pset': ps,
+        'pset_url': ps.path,
+        'pset_type': ps.assessment_type,
+        'pset_penalty': ps.resubmission_penalty,
+        'pset_attempts_allowed': ps.submissions_permitted,
+        'activity_list': activity_list
+    })
 
 @csrf_exempt
 @require_POST
@@ -158,9 +162,7 @@ def create_form(request, course_prefix, course_suffix):
     data['form'] = form
     data['course_prefix'] = course_prefix
     data['course_suffix'] = course_suffix
-    return render_to_response('problemsets/create.html',
-                              data,
-                              context_instance=RequestContext(request))
+    return render(request, 'problemsets/create.html', data)
 
 
 @auth_is_course_admin_view_wrapper
@@ -176,7 +178,7 @@ def edit_form(request, course_prefix, course_suffix, pset_slug):
     data['pset'] = pset
     data['course_prefix'] = course_prefix
     data['course_suffix'] = course_suffix
-    return render_to_response('problemsets/edit.html', data, context_instance=RequestContext(request))
+    return render(request, 'problemsets/edit.html', data)
 
 @require_POST
 @auth_is_course_admin_view_wrapper
@@ -206,7 +208,7 @@ def create_action(request):
     else:
         form = CreateProblemSet(course=common_page_data['course'])
     data['form'] = form
-    return render_to_response('problemsets/create.html', data, context_instance=RequestContext(request))
+    return render(request, 'problemsets/create.html', data)
 
 @require_POST
 @auth_is_course_admin_view_wrapper
@@ -296,7 +298,7 @@ def manage_exercises(request, course_prefix, course_suffix, pset_slug):
     data['psetToExs'] = psetToExs
     data['problemset_taken'] = problemset_taken
     data['exercises'] = exercises
-    return render_to_response('problemsets/manage_exercises.html', data, context_instance=RequestContext(request))
+    return render(request, 'problemsets/manage_exercises.html', data)
 
 @require_POST
 @auth_is_course_admin_view_wrapper
@@ -382,4 +384,7 @@ def load_problem_set(request, course_prefix, course_suffix, pset_slug):
     for psetToEx in psetToExs:
         #Remove the .html from the end of the file name
         file_names.append(psetToEx.exercise.fileName[:-5])
-    return render_to_response('problemsets/load_problem_set.html',{'file_names': file_names, 'assessment_type': pset.assessment_type},context_instance=RequestContext(request))
+    return render(request, 'problemsets/load_problem_set.html', {
+        'file_names': file_names,
+        'assessment_type': pset.assessment_type
+    })

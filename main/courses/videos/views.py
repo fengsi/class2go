@@ -1,6 +1,6 @@
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, Http404
-from django.shortcuts import render, render_to_response, redirect, HttpResponseRedirect
+from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.template import Context, loader
 from c2g.models import Course, Video, VideoToExercise, Exercise, PageVisitLog
 
@@ -42,7 +42,12 @@ def list(request, course_prefix, course_suffix):
     if request.common_page_data['course_mode'] == "draft":
         form = LiveDateForm()
 
-    return render_to_response('videos/'+common_page_data['course_mode']+'/list.html', {'common_page_data': common_page_data, 'section_structures':section_structures, 'context':'video_list', 'form': form}, context_instance=RequestContext(request))
+    return render(request, 'videos/'+common_page_data['course_mode']+'/list.html', {
+        'common_page_data': common_page_data,
+        'section_structures': section_structures,
+        'context': 'video_list',
+        'form': form
+    })
 
 @auth_view_wrapper
 def view(request, course_prefix, course_suffix, slug):
@@ -73,7 +78,11 @@ def view(request, course_prefix, course_suffix, slug):
         video_rec = VideoActivity(student=request.user, course=common_page_data['course'], video=video)
         video_rec.save()
 
-    return render_to_response('videos/view.html', {'common_page_data': common_page_data, 'video': video, 'video_rec':video_rec}, context_instance=RequestContext(request))
+    return render(request, 'videos/view.html', {
+        'common_page_data': common_page_data,
+        'video': video,
+        'video_rec': video_rec
+    })
 
 @auth_is_course_admin_view_wrapper
 def edit(request, course_prefix, course_suffix, slug):
@@ -99,9 +108,7 @@ def upload(request, course_prefix, course_suffix):
     form = S3UploadForm(course=common_page_data['course'])
     data['form'] = form
 
-    return render_to_response('videos/s3upload.html',
-                              data,
-                              context_instance=RequestContext(request))
+    return render(request, 'videos/s3upload.html', data)
 
 
 @auth_view_wrapper
@@ -167,7 +174,7 @@ def manage_exercises(request, course_prefix, course_suffix, video_slug):
     data['exercise_attempted'] = exercise_attempted
     data['exercises'] = exercises
     data['exercise_attempted'] = exercise_attempted
-    return render_to_response('videos/manage_exercises.html', data, context_instance=RequestContext(request))
+    return render(request, 'videos/manage_exercises.html', data)
 
 @auth_is_course_admin_view_wrapper
 def add_exercise(request):
@@ -283,4 +290,7 @@ def load_video_problem_set(request, course_prefix, course_suffix, video_id):
         #Remove the .html from the end of the file name
         file_names.append(vex.exercise.fileName[:-5])
     # assessment type is hard-coded because all in-video exercises are formative
-    return render_to_response('problemsets/load_problem_set.html',{'file_names': file_names, 'assessment_type': 'formative'},context_instance=RequestContext(request))
+    return render(request, 'problemsets/load_problem_set.html', {
+        'file_names': file_names,
+        'assessment_type': 'formative'
+    })

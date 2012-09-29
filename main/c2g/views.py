@@ -1,5 +1,5 @@
 from django.http import HttpResponse, Http404
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import Context, loader
 from django.template import RequestContext
 from datetime import datetime
@@ -31,7 +31,9 @@ def home(request):
         viewable_handle = course.handle.replace('--', '/')
         available_course_list.append((course.title, course.handle, viewable_handle, course_student_member))
         
-    return render_to_response('courses/signup.html', {'request': request, 'available_course_list': available_course_list}, context_instance=RequestContext(request))
+    return render(request, 'courses/signup.html', {
+        'available_course_list': available_course_list
+    })
 
 def healthcheck(request):
     return HttpResponse("I'm alive!")
@@ -43,16 +45,16 @@ def throw404(request):
     raise Http404
 
 def hc(request):
-    return render_to_response('honor_code.html',{},RequestContext(request))
+    return render(request, 'honor_code.html', {})
 
 def tos(request):
-    return render_to_response('TOS.html',{},RequestContext(request))
+    return render(request, 'TOS.html', {})
 
 def privacy(request):
-    return render_to_response('privacy.html',{},RequestContext(request))
+    return render(request, 'privacy.html', {})
     
 def faq(request):
-    return render_to_response('faq.html',{},context_instance=RequestContext(request))
+    return render(request, 'faq.html', {})
 
 def contactus(request):
     if request.GET.get('pre') and request.GET.get('post'):
@@ -67,11 +69,10 @@ def contactus(request):
         course=None
         staffmail=''
 
-    return render_to_response('contactus.html', 
-                              {'request': request,
-                               'course': course,
-                               'staffmail' : staffmail,
-                              },context_instance=RequestContext(request))
+    return render(request, 'contactus.html', {
+        'course': course,
+        'staffmail': staffmail,
+    })
 
 def test_messages(request):
     messages.info(request, 'Hello World Info')

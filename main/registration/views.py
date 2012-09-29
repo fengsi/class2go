@@ -5,7 +5,7 @@ Views which allow users to create and activate accounts.
 
 
 from django.shortcuts import redirect
-from django.shortcuts import render_to_response
+from django.shortcuts import render, render_to_response
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from registration.backends import get_backend
@@ -224,6 +224,7 @@ def register(request, backend, success_url=None, form_class=None,
         context[key] = callable(value) and value() or value
 
     layout = {'m': 800}
-    return render_to_response(template_name,
-                              {'form': form, 'layout': json.dumps(layout)},
-                              context_instance=context)
+    return render_to_response(template_name, {
+        'form': form,
+        'layout': json.dumps(layout)
+    }, context_instance=context)

@@ -113,7 +113,7 @@ def main(request, course_prefix, course_suffix):
         if index_list:
             full_contentsection_list.append(contentsection)
 
-    return render('courses/view.html', {
+    return render(request, 'courses/view.html', {
         'common_page_data': common_page_data,
         'announcement_list': announcement_list,
         'many_announcements': many_announcements,
@@ -135,7 +135,7 @@ def course_materials(request, course_prefix, course_suffix):
     if request.common_page_data['course_mode'] == "draft":
         form = LiveDateForm()
 
-    return render('courses/' + request.common_page_data['course_mode'] + '/course_materials.html', {
+    return render(request, 'courses/' + request.common_page_data['course_mode'] + '/course_materials.html', {
         'common_page_data': request.common_page_data,
         'section_structures': section_structures,
         'context': 'course_materials',

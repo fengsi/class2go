@@ -1,5 +1,5 @@
 from django.http import HttpResponse, Http404
-from django.shortcuts import render, render_to_response, redirect, HttpResponseRedirect
+from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.template import Context, loader
 from c2g.models import Course, Video
 from django.template import RequestContext
@@ -227,6 +227,4 @@ def upload(request):
         form = S3UploadForm(course=common_page_data['course'])
     data['form'] = form
 
-    return render_to_response('videos/s3upload.html',
-                              data,
-                              context_instance=RequestContext(request))
+    return render(request, 'videos/s3upload.html', data)
