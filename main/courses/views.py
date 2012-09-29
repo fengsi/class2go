@@ -44,7 +44,7 @@ def main(request, course_prefix, course_suffix):
     if common_page_data['course'].preview_only_mode:
         if not common_page_data['is_course_admin']:
             redir = reverse('courses.preview.views.preview', args=[course_prefix, course_suffix])
-            if (settings.INSTANCE == 'stage' or settings.INSTANCE == 'prod'):
+            if settings.INSTANCE in ('stage', 'prod'):
                 redir = 'https://' + request.get_host() + redir
             return redirect(redir)
 
