@@ -18,7 +18,7 @@ def add(request):
     
     def redirectWithError(warn_msg):
         url = request.get_full_path()
-        messages.add_message(request,messages.ERROR, warn_msg)
+        messages.error(request, warn_msg)
         return redirect(request.META['HTTP_REFERER'])
     
     course_prefix = request.POST.get("course_prefix")
@@ -76,7 +76,7 @@ def add(request):
 def save(request):
     def redirectWithError(warn_msg):
         url = request.get_full_path()
-        messages.add_message(request,messages.ERROR, warn_msg)
+        messages.error(request, warn_msg)
         return redirect(request.META['HTTP_REFERER'])
     
     common_page_data = get_common_page_data(request, request.POST.get("course_prefix"), request.POST.get("course_suffix"))

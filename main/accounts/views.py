@@ -208,9 +208,9 @@ def shib_login(request):
             user = User.objects.get(username=shib['REMOTE_USER'])
             user.backend = 'django.contrib.auth.backends.ModelBackend'
             auth_login(request, user)
-            messages.add_message(request, messages.SUCCESS, 'You have successfully logged in!')
+            messages.success(request, 'You have successfully logged in!')
 
     else:
-        messages.add_message(request, messages.ERROR, 'WebAuth did not return your identity to us!  Please try logging in again.  If the problem continues please contact class2go-support@cs.stanford.edu')
+        messages.error(request, 'WebAuth did not return your identity to us!  Please try logging in again.  If the problem continues please contact class2go-support@cs.stanford.edu')
 
     return HttpResponseRedirect(redir_to)

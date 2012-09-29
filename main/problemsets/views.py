@@ -44,7 +44,7 @@ def show(request, course_prefix, course_suffix, pset_slug):
     try:
         ps = ProblemSet.objects.getByCourse(course=common_page_data['course']).get(slug=pset_slug)
     except:
-        messages.add_message(request,messages.ERROR, 'This Problemset is not visible in the student view at this time. Please note that students will not see this message.')
+        messages.error(request, 'This Problemset is not visible in the student view at this time. Please note that students will not see this message.')
         return HttpResponseRedirect(reverse('problemsets.views.list', args=(course_prefix, course_suffix)))
 
     if not common_page_data['is_course_admin']:

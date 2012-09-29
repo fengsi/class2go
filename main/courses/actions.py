@@ -23,11 +23,11 @@ def auth_view_wrapper(view):
         course = request.common_page_data['course']
 
         if user.is_authenticated() and not is_member_of_course(course, user):
-            messages.add_message(request,messages.ERROR, 'You must be a member of the course to view the content you chose.')      
+            messages.error(request, 'You must be a member of the course to view the content you chose.')
             return HttpResponseRedirect(reverse('courses.views.main', args=(request.common_page_data['course_prefix'], request.common_page_data['course_suffix'],)))
 
         if not user.is_authenticated():
-            messages.add_message(request,messages.ERROR, 'You must be logged-in to view the content you chose.')
+            messages.error(request, 'You must be logged-in to view the content you chose.')
 
             return HttpResponseRedirect(reverse('courses.views.main', args=(request.common_page_data['course_prefix'], request.common_page_data['course_suffix'],)))
 
@@ -40,7 +40,7 @@ def auth_can_switch_mode_view_wrapper(view):
         if request.common_page_data['can_switch_mode']:
             return view(request, *args, **kw)
         else:
-            messages.add_message(request,messages.ERROR, "You don't have permission to view that content.")
+            messages.error(request, "You don't have permission to view that content.")
             return HttpResponseRedirect(reverse('courses.views.main', args=(request.common_page_data['course_prefix'], request.common_page_data['course_suffix'],)))
     return inner
 
@@ -50,7 +50,7 @@ def auth_is_course_admin_view_wrapper(view):
         if request.common_page_data['is_course_admin']:
             return view(request, *args, **kw)
         else:
-            messages.add_message(request,messages.ERROR, "You don't have permission to view that content.")
+            messages.error(request, "You don't have permission to view that content.")
             return HttpResponseRedirect(reverse('courses.views.main', args=(request.common_page_data['course_prefix'], request.common_page_data['course_suffix'],)))
     return inner
 
@@ -193,7 +193,7 @@ def is_member_of_course(course, user):
 def signup_with_course(request, course_prefix, course_suffix):
     course = request.common_page_data['course']
     if course.institution_only and (course.institution not in request.user.get_profile().institutions.all()):
-        messages.add_message(request,messages.ERROR, 'Registration in this course is restricted to ' + course.institution.title + '.  Perhaps you need to logout and login with your '+ course.institution.title + ' credentials?')
+        messages.error(request, 'Registration in this course is restricted to ' + course.institution.title + '.  Perhaps you need to logout and login with your '+ course.institution.title + ' credentials?')
         return redirect(reverse('courses.views.main',args=[course_prefix,course_suffix]))
 
     if request.user.is_authenticated() and (not is_member_of_course(course, request.user)):

@@ -74,9 +74,9 @@ def contactus(request):
                               },context_instance=RequestContext(request))
 
 def test_messages(request):
-    messages.add_message(request,messages.INFO, 'Hello World Info')
-    messages.add_message(request,messages.SUCCESS, 'Hello World Success')
-    messages.add_message(request,messages.WARNING, 'Hello World Warning')
-    messages.add_message(request,messages.ERROR, 'Hello World Error')
+    messages.info(request, 'Hello World Info')
+    messages.success(request, 'Hello World Success')
+    messages.warning(request, 'Hello World Warning')
+    messages.error(request, 'Hello World Error')
             
     return HttpResponse("Messages Submitted, go back to regular page to view")
