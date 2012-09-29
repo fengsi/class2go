@@ -21,9 +21,9 @@ except NameError:
     try:
         from os import getuid
         from pwd import getpwuid
-        INSTANCE=getpwuid(getuid())[0]
+        INSTANCE = getpwuid(getuid())[0]
     except:
-        INSTANCE="unknown"
+        INSTANCE = "unknown"
 
 # If PRODUCTION flag not set in Database.py, then set it now.
 #PRODUCTION = True
@@ -33,10 +33,7 @@ try:
 except NameError:
     PRODUCTION = False
 
-if PRODUCTION == True:
-    DEBUG = False
-else:
-    DEBUG = True
+DEBUG = not PRODUCTION
 
 TEMPLATE_DEBUG = DEBUG
 
@@ -117,7 +114,6 @@ STATICFILES_FINDERS = (
 )
 
 
-
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -142,7 +138,7 @@ ROOT_URLCONF = 'urls'
 
 thispath = path.dirname(path.realpath(__file__))
 TEMPLATE_DIRS = (
-    thispath+'/templates'
+    thispath + '/templates'
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -156,41 +152,40 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 INSTALLED_APPS = (
-                      'django.contrib.auth',
-                      'django.contrib.contenttypes',
-                      'django.contrib.sessions',
-                      'django.contrib.sites',
-                      'django.contrib.messages',
-                      'django.contrib.staticfiles',
-                      # Uncomment the next line to enable the admin:
-                      'django.contrib.admin',
-                      # Uncomment the next line to enable admin documentation:
-                      'django.contrib.admindocs',
-                      'registration',
-                      'south',
-                      'djcelery',
-                      #'kombu.transport.django',
-                      'c2g',
-                      'courses',
-                      'courses.forums',
-                      'courses.announcements',
-                      'courses.videos',
-                      'courses.video_exercises',
-                      'courses.email_members',
-                      'khan',
-                      'problemsets',
-                      'django.contrib.flatpages',
-                      'storages',
-                      'celerytest',
-                      'kelvinator',
-                      'db_scripts',
-                      'convenience_redirect',
-                      )
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.sites',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django.contrib.admin',
+    'django.contrib.admindocs',
+
+    'registration',
+    'south',
+    'djcelery',
+
+    'c2g',
+    'courses',
+    'courses.forums',
+    'courses.announcements',
+    'courses.videos',
+    'courses.video_exercises',
+    'courses.email_members',
+    'khan',
+    'problemsets',
+    'django.contrib.flatpages',
+    'storages',
+    'celerytest',
+    'kelvinator',
+    'db_scripts',
+    'convenience_redirect',
+)
+
 if INSTANCE != "prod":
     INSTALLED_APPS += (
-                        'db_test_data',
-                       )
-
+        'db_test_data',
+    )
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
@@ -206,14 +201,14 @@ try:
 except NameError:
     # TODO: fail if not defined
     pass
-    
+
 try:
     AWS_SECURE_STORAGE_BUCKET_NAME
 except NameError:
     if AWS_STORAGE_BUCKET_NAME.count('-') == 1:
-        AWS_SECURE_STORAGE_BUCKET_NAME = AWS_STORAGE_BUCKET_NAME.split('-')[0]+'-secure-'+AWS_STORAGE_BUCKET_NAME.split('-')[1]
+        AWS_SECURE_STORAGE_BUCKET_NAME = AWS_STORAGE_BUCKET_NAME.split('-')[0] + '-secure-' + AWS_STORAGE_BUCKET_NAME.split('-')[1]
     else:
-        AWS_SECURE_STORAGE_BUCKET_NAME = AWS_STORAGE_BUCKET_NAME # If bucket name does not follow our S3 conventions, set secure bucket to be same as bucket
+        AWS_SECURE_STORAGE_BUCKET_NAME = AWS_STORAGE_BUCKET_NAME  # If bucket name does not follow our S3 conventions, set secure bucket to be same as bucket
 
 # Setting these variables to 'local' is the idiom for using local storage.
 if (AWS_ACCESS_KEY_ID == 'local' or AWS_SECRET_ACCESS_KEY == 'local' or
@@ -233,8 +228,7 @@ AWS_QUERYSTRING_EXPIRE = 3.156e+8
 #This states that app c2g's UserProfile model is the profile for this site.
 AUTH_PROFILE_MODULE = 'c2g.UserProfile'
 
-ACCOUNT_ACTIVATION_DAYS = 7 #used by registration
-
+ACCOUNT_ACTIVATION_DAYS = 7  # used by registration
 
 
 # See http://docs.djangoproject.com/en/dev/topics/logging for
@@ -248,7 +242,7 @@ except NameError:
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
-    'formatters' : {
+    'formatters': {
         'verbose': {
             'format': '%(levelname)s %(asctime)s %(pathname)s -- %(funcName)s -- line# %(lineno)d : %(message)s '
         },
@@ -258,20 +252,20 @@ LOGGING = {
     },
     'handlers': {
         'null': {
-            'level':'DEBUG',
-            'class':'django.utils.log.NullHandler',
+            'level': 'DEBUG',
+            'class': 'django.utils.log.NullHandler',
         },
         'logfile': {
-            'level':'INFO', #making this DEBUG will log _all_ SQL queries.
-            'class':'logging.handlers.RotatingFileHandler',
-            'formatter':'verbose',
-            'filename': LOGGING_DIR+'django.log',
-            'maxBytes': 1024*1024*500,
+            'level': 'INFO',  # making this DEBUG will log _all_ SQL queries.
+            'class': 'logging.handlers.RotatingFileHandler',
+            'formatter': 'verbose',
+            'filename': LOGGING_DIR + 'django.log',
+            'maxBytes': 1024 * 1024 * 500,
             'backupCount': 3,
         },
-        'console':{
-            'level':'INFO',
-            'class':'logging.StreamHandler',
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
             'formatter': 'simple'
         },
         'mail_admins': {
@@ -282,17 +276,17 @@ LOGGING = {
     },
     'loggers': {
         '': {
-            'handlers':['logfile', 'console','mail_admins'],
+            'handlers': ['logfile', 'console', 'mail_admins'],
             'propagate': True,
-            'level':'DEBUG',
+            'level': 'DEBUG',
         },
         'django.request': {
             'handlers': ['mail_admins', 'logfile', 'console'],
             'level': 'INFO',
             'propagate': True,
         },
-        'django.db.backends':{
-            'handlers':['logfile'],
+        'django.db.backends': {
+            'handlers': ['logfile'],
             'level': 'DEBUG',
             'propagate': True,
         },
@@ -304,18 +298,18 @@ USE_ETAGS = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Session Settings
-SESSION_COOKIE_AGE = 3*30*24*3600
+SESSION_COOKIE_AGE = 3 * 30 * 24 * 3600
 
 
 # Database routing
-DATABASE_ROUTERS = ['c2g.routers.CeleryDBRouter',]
+DATABASE_ROUTERS = ['c2g.routers.CeleryDBRouter']
 
 
 # Actually send email
 try:
-   EMAIL_ALWAYS_ACTUALLY_SEND
+    EMAIL_ALWAYS_ACTUALLY_SEND
 except NameError:
-   EMAIL_ALWAYS_ACTUALLY_SEND = False
+    EMAIL_ALWAYS_ACTUALLY_SEND = False
 
 # Email Settings
 
@@ -323,7 +317,7 @@ SERVER_EMAIL = 'noreply@class.stanford.edu'
 
 # For Production, or if override is set, actually send email
 if PRODUCTION or EMAIL_ALWAYS_ACTUALLY_SEND:
-    DEFAULT_FROM_EMAIL = "noreply@class.stanford.edu" #probably change for production
+    DEFAULT_FROM_EMAIL = "noreply@class.stanford.edu"  # probably change for production
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     EMAIL_HOST = "email-smtp.us-east-1.amazonaws.com"
     EMAIL_PORT = 587
@@ -341,12 +335,11 @@ else:
 #CELERY
 CELERY_ACKS_LATE = True
 
-BROKER_TRANSPORT='sqs'
+BROKER_TRANSPORT = 'sqs'
 BROKER_USER = AWS_ACCESS_KEY_ID
 BROKER_PASSWORD = AWS_SECRET_ACCESS_KEY
 BROKER_TRANSPORT_OPTIONS = {
-    'region': 'us-west-2', 
-    'queue_name_prefix' : INSTANCE+'-',
-    'visibility_timeout' : 7200,
+    'region': 'us-west-2',
+    'queue_name_prefix': INSTANCE + '-',
+    'visibility_timeout': 7200,
 }
-
