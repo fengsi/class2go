@@ -3,7 +3,7 @@ import settings
 
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from django.template import Context, loader, RequestContext
+from django.template import Context, loader
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
@@ -45,7 +45,6 @@ def profile(request):
     if (not request.user.is_authenticated()) or (request.user.get_profile().institutions.filter(title='Stanford').exists()):
         allow_password_change = False
     return render('accounts/profile.html', {
-        'request': request,
         'courses': courses,
         'show_pwd_change': allow_password_change
     })
@@ -55,7 +54,6 @@ def edit(request):
     uform = EditUserForm(instance=request.user)
     pform = EditProfileForm(instance=request.user.get_profile())
     return render('accounts/edit.html', {
-        'request': request,
         'uform': uform,
         'pform': pform
     })
@@ -71,7 +69,6 @@ def save_edits(request):
         return HttpResponseRedirect(reverse('accounts.views.profile'))
 
     return render('accounts/edit.html', {
-        'request': request,
         'uform': uform,
         'pform': pform
     })
